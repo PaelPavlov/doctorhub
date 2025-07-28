@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Available Doctors</h2>
+
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for doctor in page_obj %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="row g-0">
+            <div class="col-md-4 text-center p-3">
+              {% if doctor.user.profile_picture %}
+                <img src="{{ doctor.user.profile_picture.url }}" alt="Doctor Picture" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+              {% else %}
+                <img src="{% static 'images/placeholder.jpg' %}" alt="Placeholder" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+              {% endif %}
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Dr. {{ doctor.first_name }} {{ doctor.last_name }}
+                    {% with avg=doctor.average_rating %}
+                      <p>
+                        <strong>Average Rating:</strong>
+                        {% for i in "12345" %}
+                          {% if forloop.counter <= avg %}
+                            <span style="color: gold;">&#9733;</span>  {# filled star ★ #}
+                          {% else %}
+                            <span style="color: lightgray;">&#9733;</span>  {# empty star ★ #}
+                          {% endif %}
+                        {% endfor %}
+                        ({{ avg|floatformat:1 }}/5)
+                      </p>
+                    {% endwith %}
+                </h5>
+                <p class="card-text"><strong>Specialty:</strong> {{ doctor.get_specialty_display }}</p>
+                <p class="card-text"><strong>Hospital:</strong> {{ doctor.hospital_name }}</p>
+                <p class="card-text mb-1"><strong>Available:</strong></p>
+                <ul class="ps-3">
+                  {% for hour in doctor.working_hours.all %}
+                    <li>{{ hour.day }}: {{ hour.start_time|time:"H:i" }} – {{ hour.end_time|time:"H:i" }}</li>
+                  {% empty %}
+                    <li>No hours set</li>
+                  {% endfor %}
+                </ul>
+                <a href="{% url 'doctor_profile' doctor.id %}" class="btn btn-outline-success btn-sm mt-2">View Profile</a>
+              {% if user.is_authenticated and doctor.working_hours.all %}
+              <a href="{% url 'book_appointment' doctor.id %}" class="btn btn-outline-success btn-sm mt-2">Book Appointment</a>
+              {% else %}
+              <p class="text-muted">No available hours</p>
+              {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No available doctors found.</p>
+    {% endfor %}
+  </div>
+</div>
+    <div class="d-flex justify-content-center mt-4">
+  <nav>
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if town %}town={{ town }}&{% endif %}{% if specialty %}specialty={{ specialty }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+        </li>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <li class="page-item">
+            <a class="page-link" href="?{% if town %}town={{ town }}&{% endif %}{% if specialty %}specialty={{ specialty }}&{% endif %}page={{ num }}">{{ num }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if town %}town={{ town }}&{% endif %}{% if specialty %}specialty={{ specialty }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+{% endblock %}

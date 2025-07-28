@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="col-md-8 offset-md-2">
+    <h3 class="mb-4 text-center">Edit Your Review for Dr. {{ doctor.user.get_full_name }}</h3>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="d-flex justify-content-between">
+        <a href="{% url 'doctor_profile' doctor_id=doctor.id %}" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

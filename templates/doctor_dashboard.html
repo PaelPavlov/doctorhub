@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5" style="max-width: 900px;">
+  <h3 class="text-center mb-4">Welcome Dr. {{ doctor.first_name }} {{ doctor.last_name }}</h3>
+
+  <h5>📅 Weekly Working Hours</h5>
+  <table class="table table-bordered text-center">
+    <thead class="table-light">
+      <tr>
+        <th>Day</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for hour in working_hours %}
+        <tr>
+          <td>{{ hour.get_day_display }}</td>
+          <td>{{ hour.start_time }}</td>
+          <td>{{ hour.end_time }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="3" class="text-muted">No working hours set.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h5 class="mt-4">📖 Upcoming Appointments</h5>
+  {% if appointments %}
+    <ul class="list-group">
+      {% for appt in appointments %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>Patient:</strong> {{ appt.patient.first_name }} {{ appt.patient.last_name }}<br>
+            <strong>Date:</strong> {{ appt.date }}<br>
+            <strong>Time:</strong> {{ appt.start_time }} - {{ appt.end_time }}
+          </div>
+          <a href="{% url 'cancel_appointment' appt.id %}" class="btn btn-outline-danger btn-sm">Cancel</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="alert alert-info text-center mt-2">No upcoming appointments yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

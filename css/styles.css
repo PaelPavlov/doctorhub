@@ -1,0 +1,23 @@
+/* styles.css - Custom tweaks for DoctorHub */
+
+body {
+  background-color: #f8f9fa;
+}
+
+footer {
+  margin-top: 4rem;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+
+.btn-outline-light {
+  border-color: #fff;
+}
+
+::placeholder {
+  font-weight: 600;
+  color: #6c757d; /* Bootstrap gray */
+}

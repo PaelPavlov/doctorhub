@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+  <h4 class="mb-3">Book appointment with Dr. {{ doctor.first_name }} {{ doctor.last_name }}</h4>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {% if selected_date %}
+      <hr>
+      <p><strong>Available slots:</strong></p>
+      {% if slots %}
+        {% for s, e in slots %}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="slot" value="{{ s|time:'H:i' }}" id="slot{{ forloop.counter }}" required>
+            <label class="form-check-label" for="slot{{ forloop.counter }}">
+              {{ s|time:"H:i" }} - {{ e|time:"H:i" }}
+            </label>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted">No available slots on this day.</p>
+      {% endif %}
+    {% endif %}
+
+    <button type="submit" class="btn btn-success mt-3">Book</button>
+  </form>
+</div>
+{% endblock %}

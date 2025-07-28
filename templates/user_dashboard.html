@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5" style="max-width: 800px;">
+  <h3 class="text-center mb-4">Your Dashboard</h3>
+
+  <h5>Upcoming Appointments</h5>
+  {% if appointments %}
+    <ul class="list-group mb-4">
+      {% for appt in appointments %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>Doctor:</strong> Dr. {{ appt.doctor.first_name }} {{ appt.doctor.last_name }}<br>
+            <strong>Date:</strong> {{ appt.date }}<br>
+            <strong>Time:</strong> {{ appt.start_time }} - {{ appt.end_time }}
+          </div>
+          <a href="{% url 'cancel_appointment' appt.id %}" class="btn btn-outline-danger btn-sm">Cancel</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="alert alert-info">You have no upcoming appointments.</div>
+  {% endif %}
+
+  <h5 class="mt-4">Past Appointments</h5>
+  {% if past_appointments %}
+    <ul class="list-group">
+      {% for appt in past_appointments %}
+        <li class="list-group-item">
+          <strong>Doctor:</strong> Dr. {{ appt.doctor.first_name }} {{ appt.doctor.last_name }}<br>
+          <strong>Date:</strong> {{ appt.date }}<br>
+          <strong>Time:</strong> {{ appt.start_time }} - {{ appt.end_time }}<br>
+          <strong>Status:</strong> {{ appt.status|title }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="alert alert-info">No past appointments found.</div>
+  {% endif %}
+</div>
+{% endblock %}

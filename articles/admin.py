@@ -3,8 +3,7 @@ from .models import Article, Comment
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'is_approved')
-    list_filter = ('is_approved',)
+    list_display = ('title', 'author')
     actions = ['approve_articles']
 
     def approve_articles(self, request, queryset):

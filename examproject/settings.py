@@ -35,6 +35,7 @@ APPS = [
     'doctors',
     'appointments',
     'reviews',
+    'articles',
 ]
 
 INSTALLED_APPS = [

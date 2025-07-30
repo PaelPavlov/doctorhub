@@ -1,10 +1,15 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, redirect, render
 from doctors.models import DoctorProfile
+from django.core.exceptions import PermissionDenied
 from .forms import ReviewForm
 from .models import Review
 from rest_framework import viewsets, permissions
 from .serializers import ReviewSerializer
+
+
+def is_staff_admin(user):
+    return user.groups.filter(name='StaffAdmins').exists()
 
 @login_required
 def add_review(request, doctor_id):
@@ -34,8 +39,15 @@ from django.http import HttpResponseForbidden
 def edit_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
 
-    if review.user != request.user:
-        return HttpResponseForbidden("You can't edit someone else's review.")
+    # if review.user != request.user:
+    #     return HttpResponseForbidden("You can't edit someone else's review.")
+
+    if not (
+        request.user == review.user or
+        request.user.is_superuser or
+        is_staff_admin(request.user)
+    ):
+        raise PermissionDenied()
 
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
@@ -52,8 +64,15 @@ def edit_review(request, review_id):
 def delete_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
 
-    if review.user != request.user:
-        return HttpResponseForbidden("You can't delete someone else's review.")
+    # if review.user != request.user:
+    #     return HttpResponseForbidden("You can't delete someone else's review.")
+
+    if not (
+        request.user == review.user or
+        request.user.is_superuser or
+        is_staff_admin(request.user)
+    ):
+        raise PermissionDenied()
 
     doctor_id = review.doctor.id
     review.delete()

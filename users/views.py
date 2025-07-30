@@ -1,15 +1,33 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, get_object_or_404
+from articles.models import Article
 from .forms import CustomUserCreationForm, CustomLoginForm, UserUpdateForm
 from .models import CustomUser
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
-
-
 from django.shortcuts import render
 
+
+
+# def home(request):
+#     articles = Article.objects.filter(is_approved=True).order_by('-created_at')[:5]
+#     return render(request, 'home.html', {'articles': articles})
+
 def home(request):
-    return render(request, 'home.html')
+    articles = Article.objects.filter(is_approved=True)
+
+    # Check if the user is in staffadmin group
+    is_staffadmin = False
+    if request.user.is_authenticated:
+        is_staffadmin = request.user.groups.filter(name='StaffAdmins').exists()
+
+    return render(request, 'home.html', {
+        'articles': articles,
+        'is_StaffAdmins': is_staffadmin,
+    })
+
+# def home(request):
+#     return render(request, 'home.html')
 
 def register(request):
     if request.method == 'POST':

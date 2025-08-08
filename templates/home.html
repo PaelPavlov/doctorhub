@@ -10,19 +10,19 @@
 {% if user.is_authenticated %}
 <div class="container mt-5">
   <div class="row">
-
-    <!-- Left Column: Doctor Search -->
     <div class="col-md-6 mb-4">
       <div class="card shadow-sm">
         <div class="card-body">
           <h5 class="card-title mb-4">Search for Doctors</h5>
           <form method="get" action="{% url 'doctor_list' %}">
             <div class="mb-3">
-              <input type="text" name="town" class="form-control" placeholder="Town">
+                <label for="town" class="form-label">Town</label>
+              <input type="text" name="town" class="form-control" id="town">
             </div>
             <div class="mb-3">
-              <select name="specialty" class="form-select">
-                <option value="">Specialty</option>
+                <label for="speciality" class="form-label">Speciality</label>
+              <select name="specialty" class="form-select" id="speciality">
+                <option value="">All Available</option>
                 <option value="Orthopedist">Orthopedist</option>
                 <option value="Dentist">Dentist</option>
                 <option value="Family_doctor">Family Doctor</option>
@@ -40,8 +40,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Right Column: Articles -->
     <div class="col-md-6 mb-4">
       <div class="card shadow-sm">
         <div class="card-body">

@@ -5,59 +5,10 @@
   <meta charset="UTF-8">
   <title>ExamProject — Find Your Doctor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-
-  <!-- Navbar -->
-{#  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">#}
-{#    <div class="container">#}
-{#      <a class="navbar-brand" href="{% url 'home' %}">DoctorHub</a>#}
-{#        {% if user.is_authenticated %}#}
-{#          <div class="d-flex align-items-center ms-auto">#}
-{#              <li class="nav-item me-2">#}
-{#                <a class="btn btn-outline-light" href="{% url 'user_dashboard' %}">Dashboard</a>#}
-{#              </li>#}
-{#            {% if user.is_doctor %}#}
-{#              <a href="{% url 'doctor_profile' user.doctor_profile.id %}" class="btn btn-outline-light me-2">Profile</a>#}
-{#            {% else %}#}
-{#              <a href="{% url 'profile' user.id %}" class="btn btn-outline-light me-2">Profile</a>#}
-{#            {% endif %}#}
-{#            {% if user.is_authenticated and user.doctor_profile %}#}
-{#                <li class="nav-item me-2">#}
-{#                <a class="btn btn-outline-light btn-sm" href="{% url 'doctor_dashboard' %}">Dashboard</a>#}
-{#                </li>#}
-{#            {% endif %}#}
-{#            <form action="{% url 'logout' %}" method="post" class="d-inline">#}
-{#              {% csrf_token %}#}
-{#              <button type="submit" class="btn btn-outline-light">Logout</button>#}
-{#            </form>#}
-{#          </div>#}
-{#        {% else %}#}
-{#          <div class="d-flex align-items-center ms-auto">#}
-{#            <a href="{% url 'register' %}" class="btn btn-outline-light me-2">Register</a>#}
-{#            <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>#}
-{#          </div>#}
-{#        {% endif %}#}
-{##}
-{#        </div>#}
-{#    </div>#}
-{#  </nav>#}
-{#{% if messages %}#}
-{#  <div class="container mt-3">#}
-{#    {% for message in messages %}#}
-{#      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">#}
-{#        {{ message }}#}
-{#        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>#}
-{#      </div>#}
-{#    {% endfor %}#}
-{#  </div>#}
-{#{% endif %}#}
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
     <a class="navbar-brand" href="{% url 'home' %}">DoctorApp</a>
@@ -68,8 +19,6 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         {% if user.is_authenticated %}
-
-          {# Dashboard & Profile for Normal Users #}
           {% if not user.doctor_profile %}
             <li class="nav-item me-2">
               <a class="btn btn-outline-light btn-sm" href="{% url 'user_dashboard' %}">Dashboard</a>
@@ -78,8 +27,6 @@
               <a class="btn btn-outline-light btn-sm" href="{% url 'profile' user.id %}">Profile</a>
             </li>
           {% endif %}
-
-          {# Dashboard & Profile for Doctors #}
           {% if user.doctor_profile %}
             <li class="nav-item me-2">
               <a class="btn btn-outline-light btn-sm" href="{% url 'doctor_dashboard' %}">Dashboard</a>
@@ -88,8 +35,6 @@
               <a class="btn btn-outline-light btn-sm" href="{% url 'doctor_profile' user.doctor_profile.id %}">Profile</a>
             </li>
           {% endif %}
-
-          {# Logout Button #}
           <li class="nav-item me-2">
             <form method="post" action="{% url 'logout' %}">
               {% csrf_token %}
@@ -98,7 +43,6 @@
           </li>
 
         {% else %}
-          {# Register & Login Buttons for Guests #}
           <li class="nav-item me-2">
             <a class="btn btn-outline-light btn-sm" href="{% url 'register' %}">Register</a>
           </li>
@@ -110,20 +54,15 @@
     </div>
   </div>
 </nav>
-
-
-  <!-- Page Content -->
   <div class="container py-4">
     {% block content %}
     {% endblock %}
   </div>
 
-  <!-- Footer -->
   <footer class="bg-light text-center py-3 border-top">
     <p class="mb-0 text-muted">&copy; 2025 DoctorHub — Your trusted medical directory</p>
   </footer>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

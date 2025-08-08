@@ -23,7 +23,6 @@ def generate_time_slots(doctor, date):
             slots.append((slot_start, slot_end))
             current += timedelta(hours=1)
 
-    # Exclude booked
     booked = Appointment.objects.filter(doctor=doctor, date=date).values_list('start_time', flat=True)
     return [(s, e) for (s, e) in slots if s not in booked]
 
@@ -111,7 +110,6 @@ def doctor_appointments(request):
 def cancel_appointment(request, appointment_id):
     appointment = get_object_or_404(Appointment, id=appointment_id)
 
-    # Allow cancellation only by the patient or the doctor
     if request.user != appointment.patient and getattr(request.user, 'doctor_profile', None) != appointment.doctor:
         return HttpResponseForbidden()
 

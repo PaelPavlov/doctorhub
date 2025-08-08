@@ -11,8 +11,6 @@
 
           <form method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
-
-            <!-- Title -->
             <div class="mb-4">
               <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
               {{ form.title }}
@@ -20,8 +18,6 @@
                 <div class="text-danger small">{{ form.title.errors }}</div>
               {% endif %}
             </div>
-
-            <!-- Content -->
             <div class="mb-3">
               <label for="{{ form.content.id_for_label }}" class="form-label">Content</label>
               {{ form.content }}
@@ -29,8 +25,6 @@
                 <div class="text-danger small">{{ form.content.errors }}</div>
               {% endif %}
             </div>
-
-            <!-- Image -->
             <div class="mb-3">
               <label for="{{ form.image.id_for_label }}" class="form-label">Image (optional)</label>
               {{ form.image }}

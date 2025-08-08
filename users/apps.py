@@ -1,4 +1,3 @@
-# users/apps.py
 from django.apps import AppConfig
 from django.db.models.signals import post_migrate
 
@@ -23,7 +22,7 @@ def create_groups(sender, **kwargs):
 
     perms = Permission.objects.filter(
         content_type__in=[review_ct, user_ct]
-    )  # remove exclude if you want full access
+    )
 
     group.permissions.set(perms)
 

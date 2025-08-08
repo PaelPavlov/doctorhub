@@ -1,10 +1,8 @@
-from django import forms
 from django.forms import modelformset_factory
-
+from django import forms
+from .models import WorkingHour
 from users.models import CustomUser
 from .models import DoctorProfile
-
-
 from django.contrib.auth.forms import UserCreationForm
 
 class DoctorUserCreationForm(UserCreationForm):
@@ -25,8 +23,6 @@ class DoctorProfileForm(forms.ModelForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
 
-from django import forms
-from .models import WorkingHour
 
 class WorkingHourForm(forms.ModelForm):
     class Meta:

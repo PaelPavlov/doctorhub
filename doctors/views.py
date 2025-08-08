@@ -6,12 +6,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from users.forms import CustomUserCreationForm
 from .forms import DoctorProfileForm, WorkingHourFormSet
 from .models import WorkingHour
 from .models import DoctorProfile
 from .serializers import DoctorProfileSerializer
+
 
 
 
@@ -85,11 +86,6 @@ def doctor_list(request):
         'specialty': specialty
     })
 
-
-
-
-
-
 @login_required
 def doctor_profile_view(request, doctor_id):
     doctor = get_object_or_404(DoctorProfile, id=doctor_id)
@@ -125,11 +121,49 @@ def edit_doctor_profile_view(request, doctor_id):
 
     return render(request, 'edit_doctor_profile.html', {'form': form, 'doctor': doctor})
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def api_doctor_list(request):
-    doctors = DoctorProfile.objects.all()
-    serializer = DoctorProfileSerializer(doctors, many=True)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        doctors = DoctorProfile.objects.all()
+        serializer = DoctorProfileSerializer(doctors, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = DoctorProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+def api_doctor_detail(request, doctor_id):
+    try:
+        doctor = DoctorProfile.objects.get(id=doctor_id)
+    except DoctorProfile.DoesNotExist:
+        return Response({'error': 'Doctor not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = DoctorProfileSerializer(doctor)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = DoctorProfileSerializer(doctor, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'PATCH':
+        serializer = DoctorProfileSerializer(doctor, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        doctor.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class DoctorProfileViewSet(viewsets.ModelViewSet):

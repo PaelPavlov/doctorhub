@@ -1,17 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse_lazy
 from articles.models import Article
-from .forms import CustomUserCreationForm, CustomLoginForm, UserUpdateForm
+from .forms import CustomUserCreationForm, CustomLoginForm, UserUpdateForm, CustomPasswordChangeForm
 from .models import CustomUser
 from django.contrib import messages
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.shortcuts import render
 
-
-
-# def home(request):
-#     articles = Article.objects.filter(is_approved=True).order_by('-created_at')[:5]
-#     return render(request, 'home.html', {'articles': articles})
 
 
 def home(request):
@@ -25,8 +21,6 @@ def home(request):
         'articles': articles,
         'is_staffadmin': is_staffadmin,
     })
-# def home(request):
-#     return render(request, 'home.html')
 
 def register(request):
     if request.method == 'POST':
@@ -53,16 +47,15 @@ class CustomLoginView(LoginView):
         return super().form_valid(form)
 
 
-
-
 @login_required
 def profile_by_id(request, user_id):
-    user_obj = get_object_or_404(CustomUser, id=user_id)
+    profile_user = get_object_or_404(CustomUser, id=user_id)
 
-    if request.user != user_obj:
+    if request.user != profile_user:
         return redirect('profile', user_id=request.user.id)
 
-    return render(request, 'profile.html', {'user': user_obj})
+    return render(request, 'profile.html', {'profile_user': profile_user})
+
 
 @login_required
 def edit_profile_by_id(request, user_id):
@@ -79,3 +72,9 @@ def edit_profile_by_id(request, user_id):
         form = UserUpdateForm(instance=user)
 
     return render(request, 'edit_profile.html', {'form': form})
+
+
+class CustomPasswordChangeView(PasswordChangeView):
+    form_class = CustomPasswordChangeForm
+    template_name = 'password_change.html'
+    success_url = reverse_lazy('home')

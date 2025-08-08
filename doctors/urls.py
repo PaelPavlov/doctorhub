@@ -8,5 +8,6 @@ urlpatterns = [
     path('<int:doctor_id>/edit/', views.edit_doctor_profile_view, name='edit_doctor_profile'),
     path('all/', views.doctor_list, name='doctor_list'),
     path('api/doctors/', views.api_doctor_list, name='api_doctor_list'),
+    path('api/doctors/<int:doctor_id>/', views.api_doctor_detail, name='api_doctor_details'),
 
 ]

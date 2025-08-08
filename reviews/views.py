@@ -1,4 +1,5 @@
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from doctors.models import DoctorProfile
 from django.core.exceptions import PermissionDenied
@@ -15,7 +16,6 @@ def is_staff_admin(user):
 def add_review(request, doctor_id):
     doctor = get_object_or_404(DoctorProfile, id=doctor_id)
 
-    # Prevent duplicate reviews
     if Review.objects.filter(user=request.user, doctor=doctor).exists():
         return redirect('doctor_profile', doctor_id=doctor.id)
 
@@ -33,14 +33,11 @@ def add_review(request, doctor_id):
     return render(request, 'add_review.html', {'form': form, 'doctor': doctor})
 
 from django.contrib import messages
-from django.http import HttpResponseForbidden
+
 
 @login_required
 def edit_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
-
-    # if review.user != request.user:
-    #     return HttpResponseForbidden("You can't edit someone else's review.")
 
     if not (
         request.user == review.user or
@@ -63,9 +60,6 @@ def edit_review(request, review_id):
 @login_required
 def delete_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
-
-    # if review.user != request.user:
-    #     return HttpResponseForbidden("You can't delete someone else's review.")
 
     if not (
         request.user == review.user or

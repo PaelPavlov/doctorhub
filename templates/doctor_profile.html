@@ -17,7 +17,6 @@
               <img src="{% static 'images/placeholder.jpg' %}" alt="Placeholder" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
             </div>
           {% endif %}
-
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><strong>Name:</strong> Dr. {{ doctor.first_name }} {{ doctor.middle_name }} {{ doctor.last_name }}
                 {% with avg=doctor.average_rating %}
@@ -40,13 +39,6 @@
             <li class="list-group-item"><strong>Telephone:</strong> {{ doctor.telephone }}</li>
             <li class="list-group-item"><strong>Specialty:</strong> {{ doctor.get_specialty_display }}</li>
             <li class="list-group-item"><strong>Working Hours:</strong>
-{#              <ul class="mb-0 mt-1">#}
-{#                {% for hour in working_hours %}#}
-{#                  <li>{{ hour.day }}: {{ hour.start_time|time:"H:i" }} – {{ hour.end_time|time:"H:i" }}</li>#}
-{#                {% empty %}#}
-{#                  <li>No working hours set.</li>#}
-{#                {% endfor %}#}
-{#              </ul>#}
             </li>
           </ul>
 <h5 class="mt-4">Weekly Availability</h5>

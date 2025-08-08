@@ -1,25 +1,6 @@
 from django import forms
 from .models import Appointment
 from django.utils import timezone
-
-# class AppointmentForm(forms.ModelForm):
-#     class Meta:
-#         model = Appointment
-#         fields = ['date', 'start_time', 'end_time']
-#         widgets = {
-#             'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-#             'start_time': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
-#             'end_time': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
-#         }
-#
-#     def clean(self):
-#         cleaned_data = super().clean()
-#         start = cleaned_data.get('start_time')
-#         end = cleaned_data.get('end_time')
-#         if start and end and start >= end:
-#             raise forms.ValidationError("End time must be after start time.")
-#         return cleaned_data
-
 from django import forms
 
 class AppointmentDateForm(forms.Form):

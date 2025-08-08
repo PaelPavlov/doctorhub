@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="mb-4 text-primary text-center">About Us</h1>
+      <p class="lead text-center mb-5">
+        Welcome to DoctorHub — your trusted platform for connecting patients with qualified doctors.
+      </p>
+
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a sapien vitae libero tincidunt posuere.
+        Praesent dictum lectus id risus dignissim, nec viverra justo porta. Suspendisse potenti.
+        Etiam gravida augue nec est vehicula, eu pretium purus suscipit.
+      </p>
+
+      <p>
+        Sed sed ex in eros bibendum porttitor. Vivamus eget ultricies orci. Vestibulum eget augue nisl.
+        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Donec gravida semper lectus vel porta.
+      </p>
+
+      <p>
+        Quisque malesuada, turpis vel posuere fermentum, purus dui vulputate lorem, a ullamcorper leo neque et nibh.
+        Vivamus eget dignissim magna, vitae aliquam libero. Curabitur pretium ante et volutpat scelerisque.
+      </p>
+
+      <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-primary btn-lg">Back to Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

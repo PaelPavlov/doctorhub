@@ -47,6 +47,9 @@ class CustomLoginView(LoginView):
         return super().form_valid(form)
 
 
+def about(request):
+    return render(request, 'about.html')
+
 @login_required
 def profile_by_id(request, user_id):
     profile_user = get_object_or_404(CustomUser, id=user_id)

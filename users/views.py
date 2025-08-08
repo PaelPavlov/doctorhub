@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -26,9 +27,10 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            login(request, user)
             messages.success(request, "Account created successfully.")
-            return redirect('login')
+            return redirect('home')
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})

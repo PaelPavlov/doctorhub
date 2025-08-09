@@ -45,7 +45,7 @@ class CustomLoginView(LoginView):
         if not remember:
             self.request.session.set_expiry(0)
         else:
-            self.request.session.set_expiry(1209600)  # 2 weeks
+            self.request.session.set_expiry(1209600)
         return super().form_valid(form)
 
 

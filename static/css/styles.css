@@ -1,4 +1,4 @@
-/* styles.css - Custom tweaks for DoctorHub */
+
 
 body {
   background-color: #f8f9fa;
@@ -19,5 +19,5 @@ footer {
 
 ::placeholder {
   font-weight: 600;
-  color: #6c757d; /* Bootstrap gray */
+  color: #6c757d;
 }

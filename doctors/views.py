@@ -61,7 +61,7 @@ def doctor_register(request):
     })
 
 
-
+@login_required()
 def doctor_list(request):
     doctors = DoctorProfile.objects.prefetch_related('working_hours').filter(working_hours__isnull=False).distinct()
 

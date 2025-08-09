@@ -8,9 +8,9 @@
         <div class="card-body">
           <h3 class="text-center mb-3">{{ doctor.user.username }}</h3>
 
-          {% if doctor.user.profile_picture %}
+          {% if doctor.profile_picture %}
             <div class="text-center mb-3">
-              <img src="{{ doctor.user.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+              <img src="{{ doctor.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
             </div>
           {% else %}
             <div class="text-center mb-3">

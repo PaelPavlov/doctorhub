@@ -15,7 +15,7 @@ def create_article(request):
         if form.is_valid():
             article = form.save(commit=False)
             article.author = request.user
-            article.is_approved = False  # Needs approval
+            article.is_approved = False  #Not needed currently
             article.save()
             return redirect('home')
     else:

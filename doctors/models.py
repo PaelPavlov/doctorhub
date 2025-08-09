@@ -24,6 +24,8 @@ class DoctorProfile(models.Model):
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100)
+    country = models.CharField(max_length=100, blank=True)
+    city = models.CharField(max_length=100, blank=True)
     town = models.CharField(max_length=100)
     hospital_name = models.CharField(max_length=255)
     hospital_address = models.CharField(max_length=255)

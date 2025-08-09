@@ -13,6 +13,12 @@
             {% csrf_token %}
             {% for field in form %}
               <div class="mb-3">
+                  <label for="id_{{ field.name }}" class="form-label">
+                      {{ field.label }}
+                      {% if field.field.required %}
+                          <span class="text-danger"><b>*</b></span>
+                      {% endif %}
+                  </label>
                 <input
                   type="{{ field.field.widget.input_type|default:'text' }}"
                   name="{{ field.name }}"
@@ -29,7 +35,12 @@
             <h5 class="text-secondary border-bottom pb-2 mb-4 mt-4">Doctor Profile</h5>
             {% for field in profile_form %}
               <div class="mb-3">
-                {{ field.label_tag }}
+                    <label for="{{ field.id_for_label }}">
+                      {{ field.label }}
+                        {% if field.field.required %}
+                        <span class="text-danger">*</span>
+                      {% endif %}
+                    </label>
                 {{ field }}
                 {% for error in field.errors %}
                   <div class="text-danger small">{{ error }}</div>

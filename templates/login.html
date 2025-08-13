@@ -7,20 +7,30 @@
         <div class="card-body">
           <h3 class="card-title text-center mb-4">Login to DoctorHub</h3>
 
-          <form method="post">
+          <form method="post" novalidate>
             {% csrf_token %}
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+
             {% for field in form %}
               <div class="mb-3">
                 <input
                   type="{% if 'password' in field.name %}password{% else %}text{% endif %}"
                   name="{{ field.name }}"
                   id="id_{{ field.name }}"
-                  value="{{ field.value|default_if_none:'' }}"
+                  value="{% if 'password' in field.name %}{% else %}{{ field.value|default_if_none:'' }}{% endif %}"
                   placeholder="{{ field.label }}"
-                  class="form-control text-secondary"
+                  class="form-control text-secondary{% if field.errors %} is-invalid{% endif %}"
+                  autocomplete="{% if 'password' in field.name %}current-password{% else %}username{% endif %}"
+                  required
                 >
                 {% for error in field.errors %}
-                  <div class="text-danger small">{{ error }}</div>
+                  <div class="invalid-feedback d-block">{{ error }}</div>
                 {% endfor %}
               </div>
             {% endfor %}

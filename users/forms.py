@@ -16,6 +16,11 @@ class CustomUserCreationForm(UserCreationForm):
             field.widget.attrs['class'] = 'form-control'
 
 class CustomLoginForm(AuthenticationForm):
+    error_messages = {
+        "invalid_login": "Invalid username or password.",
+        "inactive": "This account is inactive.",
+    }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
